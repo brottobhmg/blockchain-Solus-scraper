@@ -3,9 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
-#[numero blocco, timestamp, hash, size, weight, version, merkleroot, tx[...], number transaction, difficulty, chainwork, headerhash, mixhash]
-#[powWinner, block reward, output amount, fee amount]
-
 f = open('block_log.csv', 'w', newline='')
 startTime=time.time()
 print("Start at "+str(startTime))
@@ -14,6 +11,7 @@ f.write("0,1651442858,0000000a50fdaaf22f1c98b8c61559e15ab2269249aa1fb20683180703
 
 i=1
 while i<1000:
+
     data=""
 
     response=response=requests.get("https://neoxa.cryptoscope.io/api/getblock/?index="+str(i))
@@ -43,7 +41,7 @@ while i<1000:
 
     i+=1
 
-    time.sleep(0.4)
+    time.sleep(0.6)
 
     
 finishTime=time.time()
