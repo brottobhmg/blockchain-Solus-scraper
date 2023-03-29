@@ -7,11 +7,13 @@ from bs4 import BeautifulSoup
 #[powWinner, block reward, output amount, fee amount]
 
 f = open('block_log.csv', 'w', newline='')
+startTime=time.time()
+print("Start at "+str(startTime))
 f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
 f.write("0,1651442858,0000000a50fdaaf22f1c98b8c61559e15ab2269249aa1fb20683180703cdbf07,294,1176,4,7c1d71731b98c560a80cee3b88993c8c863342b9661894304fd843bf7e75a41f,['7c1d71731b98c560a80cee3b88993c8c863342b9661894304fd843bf7e75a41f'],1,0.00390625,0000000000000000000000000000000000000000000000000000000001000100,93aa1e9e397de2a5a60d309fa0b82267ab6520ae6302181847bf14bd41143f2a,0000000000000000000000000000000000000000000000000000000000000000,Genesis,0.00000000,None,0.00000000\n")
 
 i=1
-while i<50:
+while i<1000:
     data=""
 
     response=response=requests.get("https://neoxa.cryptoscope.io/api/getblock/?index="+str(i))
@@ -44,7 +46,9 @@ while i<50:
     time.sleep(0.4)
 
     
-
+finishTime=time.time()
+print("Finish at "+str(finishTime))
+print("The time spent on: "+str(finishTime-startTime))
 # close the file
 f.close()
 
