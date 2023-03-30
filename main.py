@@ -14,7 +14,11 @@ while i<451973:
 
     data=""
 
-    response=response=requests.get("https://"+coin+".cryptoscope.io/api/getblock/?index="+str(i))
+    try:
+        response=response=requests.get("https://"+coin+".cryptoscope.io/api/getblock/?index="+str(i))
+    except:
+        time.sleep(2)
+        continue
     if "429 Too Many Requests" in response.text:
         time.sleep(1)
         print("Wait:"+str(i))
@@ -23,8 +27,12 @@ while i<451973:
     response=response.json()
     data=str(i)+','+str(response["time"])+','+str(response["hash"])+','+str(response["size"])+','+str(response["weight"])+','+str(response["version"])+','+str(response["merkleroot"])+','+str(response["tx"])+','+str(len(response["tx"]))+','+str(response["difficulty"])+','+str(response["chainwork"])+','+str(response["headerhash"])+','+str(response["mixhash"])
     
-
-    response=requests.get("https://"+coin+".cryptoscope.io/block/block.php?blockheight="+str(i)).text
+    try:
+        response=requests.get("https://"+coin+".cryptoscope.io/block/block.php?blockheight="+str(i)).text
+    except:
+        time.sleep(2)
+        continue
+    
     soup = BeautifulSoup(response, 'html.parser')
    
     if i!=0:
@@ -45,7 +53,7 @@ while i<451973:
 
     time.sleep(0.6)
 
-    
+
 finishTime=time.time()
 print("Finish at "+str(finishTime))
 print("The time spent on: "+str(finishTime-startTime))
