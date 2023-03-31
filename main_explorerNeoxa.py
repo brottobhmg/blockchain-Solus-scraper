@@ -26,7 +26,6 @@ startTime=time.time()
 print("Start at "+str(startTime))
 i=last_block_found+1
 while i<last_blockchain_block:
-    print(i)
     data=""
 
     try:
