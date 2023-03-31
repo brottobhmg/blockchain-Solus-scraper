@@ -9,8 +9,8 @@ startTime=time.time()
 print("Start at "+str(startTime))
 f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
 
-i=0
-while i<451973:
+i=2145
+while i<2155:
 
     data=""
 
@@ -25,7 +25,7 @@ while i<451973:
         continue
     
     response=response.json()
-    data=str(i)+','+str(response["time"])+','+str(response["hash"])+','+str(response["size"])+','+str(response["weight"])+','+str(response["version"])+','+str(response["merkleroot"])+','+str(response["tx"])+','+str(len(response["tx"]))+','+str(response["difficulty"])+','+str(response["chainwork"])+','+str(response["headerhash"])+','+str(response["mixhash"])
+    data=str(i)+','+str(response["time"])+','+str(response["hash"])+','+str(response["size"])+','+str(response["weight"])+','+str(response["version"])+','+str(response["merkleroot"])+','+str(response["tx"]).replace(",",";")+','+str(len(response["tx"]))+','+str(response["difficulty"])+','+str(response["chainwork"])+','+str(response["headerhash"])+','+str(response["mixhash"])
     
     try:
         response=requests.get("https://"+coin+".cryptoscope.io/block/block.php?blockheight="+str(i)).text
