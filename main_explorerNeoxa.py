@@ -2,9 +2,8 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-coin="rvn"
 
-f = open('block_log.csv', 'w', newline='')
+f = open('neoxa_block_log.csv', 'w', newline='')
 startTime=time.time()
 print("Start at "+str(startTime))
 f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
@@ -15,20 +14,23 @@ while i<450000:
     data=""
 
     try:
-        response=response=requests.get("https://"+coin+".cryptoscope.io/api/getblock/?index="+str(i))
+        response1=requests.get("https://explorer.neoxa.net/api/getblockhash?index="+str(i)).text
+        response=requests.get("https://explorer.neoxa.net/api/getblock?hash="+str(response1))
     except:
         time.sleep(2)
+        print(response)
+        print(response1)       
         continue
-    if "429 Too Many Requests" in response.text:
-        time.sleep(1)
-        print("Wait:"+str(i))
-        continue
-    
-    response=response.json()
+
+    try:
+        response=response.json()
+    except:
+        print(response.text)
+
     data=str(i)+','+str(response["time"])+','+str(response["hash"])+','+str(response["size"])+','+str(response["weight"])+','+str(response["version"])+','+str(response["merkleroot"])+','+str(response["tx"]).replace(",",";")+','+str(len(response["tx"]))+','+str(response["difficulty"])+','+str(response["chainwork"])+','+str(response["headerhash"])+','+str(response["mixhash"])
     
     try:
-        response=requests.get("https://"+coin+".cryptoscope.io/block/block.php?blockheight="+str(i)).text
+        response=requests.get("https://neoxa.cryptoscope.io/block/block.php?blockheight="+str(i)).text
     except:
         time.sleep(2)
         continue
@@ -51,7 +53,6 @@ while i<450000:
 
     i+=1
 
-    time.sleep(0.6)
 
 
 finishTime=time.time()
