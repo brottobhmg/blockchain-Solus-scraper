@@ -7,17 +7,16 @@ from bs4 import BeautifulSoup
 g=open("neoxa_block_log.csv",'r')
 last_block_found=(g.readlines()[-1].split(",")[0])
 g.close()
+
 f = open('neoxa_block_log.csv', 'a', newline='')
+f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
+
+last_blockchain_block=requests.get("https://explorer.neoxa.net/api/getblockcount").text
+print("From data, last block: "+str(last_block_found))
+print("Last blockchain block: "+str(last_blockchain_block))
 
 startTime=time.time()
 print("Start at "+str(startTime))
-f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
-
-g=open("neoxa_block_log.csv",'r')
-last_block_found=(g.readlines()[-1].split(",")[0])
-
-last_blockchain_block=requests.get("https://explorer.neoxa.net/api/getblockcount").text
-
 i=last_block_found+1
 while i<last_blockchain_block:
 
