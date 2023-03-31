@@ -2,33 +2,39 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-
-
 g=open("neoxa_block_log.csv",'r')
-last_block_found=(g.readlines()[-1].split(",")[0])
+gLines=g.readlines()
+gNumberLine=len(gLines)
 g.close()
 
 f = open('neoxa_block_log.csv', 'a', newline='')
-f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
 
-last_blockchain_block=requests.get("https://explorer.neoxa.net/api/getblockcount").text
-print("From data, last block: "+str(last_block_found))
+if gNumberLine==0:
+    f.write("block number, timestamp, hash, size, weight, version, merkleroot, tx, number transaction, difficulty, chainwork, headerhash, mixhash, pow winner, block reward, output amount, fee amount\n") #write header
+    last_block_found=0
+elif gNumberLine==1:
+    last_block_found=0
+elif gNumberLine>1:
+    last_block_found=int(gLines[-1].split(",")[0])
+    print("From data, last block: "+str(last_block_found))
+g.close()
+
+last_blockchain_block=int(requests.get("https://explorer.neoxa.net/api/getblockcount").text)
 print("Last blockchain block: "+str(last_blockchain_block))
 
 startTime=time.time()
 print("Start at "+str(startTime))
 i=last_block_found+1
 while i<last_blockchain_block:
-
+    print(i)
     data=""
 
     try:
         response1=requests.get("https://explorer.neoxa.net/api/getblockhash?index="+str(i)).text
         response=requests.get("https://explorer.neoxa.net/api/getblock?hash="+str(response1))
     except:
-        time.sleep(2)
-        print(response)
-        print(response1)       
+        time.sleep(1)
+        print("explorer neoxa timeout")
         continue
 
     try:
@@ -41,7 +47,8 @@ while i<last_blockchain_block:
     try:
         response=requests.get("https://neoxa.cryptoscope.io/block/block.php?blockheight="+str(i)).text
     except:
-        time.sleep(2)
+        time.sleep(1)
+        print("cryptoscope .php timeout")
         continue
     
     soup = BeautifulSoup(response, 'html.parser')
